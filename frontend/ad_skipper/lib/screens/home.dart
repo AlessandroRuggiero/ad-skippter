@@ -1,4 +1,5 @@
 import 'package:ad_skipper/models/server.dart';
+import 'package:ad_skipper/screens/components/controlPaned.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -14,7 +15,7 @@ class _HomeState extends State<Home> {
     super.initState();
     _server = Server();
   }
-  Future<void> checkSub () async {
+  Future<bool> checkSub () async {
     print ("controllo");
     final valid = await _server.validateIp();
     print (valid);
@@ -24,24 +25,9 @@ class _HomeState extends State<Home> {
         _subready = valid;
       });
     }
-   
-  }
-  Future <void> skipAd (BuildContext context)async{
-    final alive = await _server.isAlive();
-    if (alive) {
-      final bool skipped = await _server.skipAd();
-      print ("skipped: $skipped");
-    }else {
-      connectionError (context);
-    }
+   return _subready;
   }
 
-
-  void connectionError (BuildContext context){
-    Scaffold.of (context).showSnackBar(SnackBar(content: 
-    Text ("Errore di connessione")
-    ));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,15 +43,10 @@ class _HomeState extends State<Home> {
           },
         ),
         SizedBox(height: 20,),
-        FlatButton(onPressed: () async {
-          await checkSub();
-          if (!_subready){
-            return;
-          }
-          await skipAd(context);
-        },  child: Text ("Skip Ad"),
-        color: _subready? Colors.blue : Colors.grey,
-        
+        ControlPanel(
+          check: checkSub,
+          ready: _subready,
+          server: _server,
         )
       ],
     );

@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
       ),
       body: SafeArea(child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Home(),
+        child: SingleChildScrollView(child: Home()),
       )),
     );
   }

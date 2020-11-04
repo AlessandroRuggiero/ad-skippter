@@ -37,9 +37,25 @@ def si_alive():
 def skipAd():
     print ("richiesta ricevuta")
     skip_ad()
-    return jsonify({"alive":True})
+    return "200"
 
+@app.route('/closeAd', methods=['POST'])
+def closeAd ():
+    print ("richiesta ricevuta")
+    pyautogui.click(*coord.medium_ad)
+    return "200"
 
+@app.route('/closeSmallAd', methods=['POST'])
+def closeSmallAd ():
+    print ("richiesta ricevuta")
+    pyautogui.click(*coord.small_ad)
+    return "200"
+
+@app.route('/skipSeconds', methods=['POST'])
+def api_id():
+    print ("skippo")
+    pyautogui.press('right')  
+    return "200"
 
 print (get_ip())
 app.run(host= '0.0.0.0')
